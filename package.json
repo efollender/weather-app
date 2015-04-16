@@ -1,0 +1,22 @@
+{
+  "author": "Your Name Here",
+  "name": "weather-app",
+  "repository": "",
+  "description": "",
+  "version": "1.0.0",
+  "main": "./app/app.js",
+  "reapp": "0.8",
+  "scripts": {
+    "test": "",
+    "start": "reapp run"
+  },
+  "dependencies": {
+    "react": "^0.13.1",
+    "reapp-kit": "^1.2.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-stylus": "^2.0.1",
+    "gulp-watch": "^4.2.4"
+  }
+}

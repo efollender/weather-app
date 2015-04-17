@@ -43,8 +43,11 @@ action('getForecast', (location) => {
 				console.log('forecast', response)
 				let forecast = response.list.map((obj)=>{
 					return {
-						temp: obj.temp,
-						conditions: obj.weather.description
+						temp:{
+							max: Math.floor(obj.temp.max),
+							min: Math.floor(obj.temp.min)
+						},
+						conditions: obj.weather[0]
 					}
 				});
 				store().set('forecast', toArray(forecast));

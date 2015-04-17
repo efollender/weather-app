@@ -1,4 +1,6 @@
-import { Reapp, React, View, BackButton, store, action } from 'reapp-kit';
+import { Reapp, React, View, BackButton, store, action, Container } from 'reapp-kit';
+import Forecast from './Forecast';
+import Chart from './Chart';
 
 const Results = store.cursor(['weather', 'forecast'], class Results extends React.Component {
   constructor(props){
@@ -47,8 +49,13 @@ const Results = store.cursor(['weather', 'forecast'], class Results extends Reac
             <span>81</span>
           }
         </h1>
+        
         {this.props.forecast &&
-            <p>{this.props.forecast[0]}</p>
+          <Forecast data={this.props.forecast} />
+        }
+        
+        {this.props.forecast &&
+          <Chart data={this.props.forecast} />
         }
       </View>
     );

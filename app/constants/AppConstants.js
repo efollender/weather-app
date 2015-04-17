@@ -3,6 +3,6 @@ export default {
 
 	},
 	WeatherAPI: {
-		root: 'http://api.openweathermap.org/data/2.5/weather?'
+		root: 'http://api.openweathermap.org/data/2.5'
 	}
 }

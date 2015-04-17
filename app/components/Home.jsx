@@ -1,21 +1,33 @@
 import { Reapp, React, NestedViewList, View, Button, store, SearchBar } from 'reapp-kit';
 import ViewActions from '../actions/ViewActions';
+import RotatingLoadingIcon from './shared/RotatingLoadingIcon';
 
 const Home = store.cursor(['weather'], class Home extends React.Component {
-  componentWillMount(){
+  constructor(props){
+    super(props);
     this.state = {
       loaded: false
-    }
+    };
   }
   getWeather(e){
     if(event.keyCode == 13){
-      this.action.getWeather(e.target.value);
-      this.state = {
-        loaded:true,
+      this.setState({
+        refreshing: true,
         query: e.target.value
-      };
+      });
+      this.action.getForecast(this.state.query);
+      this.action.getWeather(this.state.query)
+        .then(() => {
+          this.setState({
+            loaded: true,
+            refreshing: false
+          });
+        })
+        .catch((err) => {
+          console.log('errrrr', err);
+        });
     }
-  } 
+  }
   render() {
     return (
       <NestedViewList {...this.props.viewListProps}>
@@ -25,12 +37,14 @@ const Home = store.cursor(['weather'], class Home extends React.Component {
           {!this.state.loaded && 
             <p>Go get some weather</p>
           }
-            {this.props.weather &&
-              <h1>{this.props.weather}</h1>
-            }
-          <Button onTap={() => this.router().transitionTo('sub')} filled>
-            Go to sub view
-          </Button>
+          {this.state.refreshing &&
+            <RotatingLoadingIcon />
+          }
+          {this.props.weather &&
+            <Button onTap={() => this.router().transitionTo('results', {zip: this.state.query })} filled>
+              See the weather in {this.props.weather.city}
+            </Button>
+          }
         </View>
 
         {this.props.child()}

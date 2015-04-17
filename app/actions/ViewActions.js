@@ -18,19 +18,46 @@ function toArray(obj){
 }
 
 action('getWeather', (zip) => {
-	get(`zip=${zip},us`)
+	get(`/weather?zip=${zip},us&units=imperial`)
 		.then( (response) => {
-			store().set('weather', response);
+			if(response.main){
+				let currentWeather = {
+					temp: Math.floor(response.main.temp),
+					city: response.name,
+					conditions: response.weather[0].main 
+				}
+				store().set('weather', currentWeather);
+			}
+			console.log(response);
 		})
 		.catch((err) => {
 			console.log('errr...', err.message);
 			return false;
+		});
+});
+
+action('getForecast', (location) => {
+	get(`/forecast/daily?q=${location},us&units=imperial`)
+		.then( (response) => {
+			if(response.cod == '200'){
+				console.log('forecast', response)
+				let forecast = response.list.map((obj)=>{
+					return {
+						temp: obj.temp,
+						conditions: obj.weather.description
+					}
+				});
+				store().set('forecast', toArray(forecast));
+			}
+			return true;
 		})
+		.catch((err) => {
+			console.log('errr...', err.message);
+			return false;
+		});
 });
 
 function returnWeatherStore () {
 	let weather = store().get('weather');
-	// console.log(weather);
 	return weather;
-	// return false;
 }

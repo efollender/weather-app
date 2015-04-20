@@ -1,6 +1,7 @@
 import { Reapp, React, NestedViewList, View, Button, store, SearchBar } from 'reapp-kit';
 import ViewActions from '../actions/ViewActions';
 import RotatingLoadingIcon from './shared/RotatingLoadingIcon';
+import Results from './home/Results';
 
 const Home = store.cursor(['weather'], class Home extends React.Component {
   constructor(props){
@@ -41,9 +42,12 @@ const Home = store.cursor(['weather'], class Home extends React.Component {
             <RotatingLoadingIcon />
           }
           {this.props.weather &&
-            <Button onTap={() => this.router().transitionTo('results', {zip: this.state.query })} filled>
-              See the weather in {this.props.weather.city}
-            </Button>
+            <div>
+              <Button onTap={() => this.router().transitionTo('details', {zip: this.state.query })} textColor={'#ffffff'}>
+                {'See details for ' + this.props.weather.city}
+              </Button>
+              <Results />
+            </div>
           }
         </View>
 

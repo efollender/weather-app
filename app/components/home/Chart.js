@@ -1,4 +1,5 @@
 import {React} from 'reapp-kit';
+const d3 = require('d3');
 const AreaChart = require('react-d3/areachart').AreaChart;
 
 export default class Chart extends React.Component {
@@ -16,6 +17,7 @@ export default class Chart extends React.Component {
     console.log(areaData);
     return (
       <AreaChart
+        styles={styles.self}
         data={areaData}
         yAccessor={d=>{
           return d[1];
@@ -23,11 +25,21 @@ export default class Chart extends React.Component {
         xAccessor={d=>{
           return d[0];
         }}
+        yAxisLableOffset={0}
+        xAxisLabelOffset={0}
         xAxisTickCount={7}
-        width={400}
-        height={300}
+        viewBox={'0 0 400 150'}
+        axesColor={'#fff'}
+        colors={d3.scale.category20b()}
       />
     );
   }
 };
 
+let styles = {
+  self: {
+    color: 'white',
+    fill: '#fff'
+  },
+
+};

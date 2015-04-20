@@ -1,1 +1,1 @@
-p{color:#fff}.View--inner:before{position:absolute;top:0;left:0;bottom:0;right:0;content:'';display:inline-block;background:rgba(152,155,207,0.6)}
+svg{width:100%;height:100%}.tick{fill:#fff !important;}.tick line{stroke:#fff !important}.domain,.range{stroke:#fff !important}p{color:#fff}.View--inner:before{position:absolute;top:0;left:0;bottom:0;right:0;content:'';display:inline-block;background:rgba(152,155,207,0.6)}

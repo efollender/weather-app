@@ -5,5 +5,6 @@ const requirer = name => require(`./styles/${name}`);
 
 export default makeStyles(requirer, [
   'TitleBar',
-  'View'
+  'View',
+  'Button'
 ]);

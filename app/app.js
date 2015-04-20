@@ -3,6 +3,6 @@ import { router, route } from 'reapp-kit';
 
 router(require,
   route('home', '/',
-    route('results', '/weather/:zip')
+    route('details', '/weather/:zip')
   )
 );

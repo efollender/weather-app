@@ -1,68 +1,66 @@
-import { Reapp, React, NestedViewList, View, Button, store, SearchBar } from 'reapp-kit';
+import { Reapp, React, NestedViewList, View, Button, store, Drawer, Icon } from 'reapp-kit';
 import ViewActions from '../actions/ViewActions';
-import RotatingLoadingIcon from './shared/RotatingLoadingIcon';
 import Results from './home/Results';
+import Details from './home/Details';
+import CityMenu from './home/Menu';
+let iconFile = require('reapp-kit/icons/add.svg');
 
-const Home = store.cursor(['weather'], class Home extends React.Component {
+const Home = store.cursor(['weather', 'cities'], class Home extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      loaded: false
+      loaded: false,
+      openMenu: false
     };
   }
+  componentWillMount(){
+    store().set('cities', store().get('setCities').call());
+  }
+  componentWillUnmount(){
+    localStorage.setItem('cities', JSON.stringify(store().get('cities')));
+  }
   getWeather(e){
-    if(event.keyCode == 13){
-      this.setState({
-        refreshing: true,
-        query: e.target.value
-      });
-      this.action.getForecast(this.state.query);
-      this.action.getWeather(this.state.query)
-        .then(() => {
-          this.setState({
-            loaded: true,
-            refreshing: false
-          });
-        })
-        .catch((err) => {
-          console.log('errrrr', err);
-        });
-    }
+    // if(event.keyCode == 13){
+    //   this.setState({
+    //     refreshing: true,
+    //     query: e.target.value
+    //   });
+    //   this.action.getForecast(this.state.query);
+    //   this.action.getWeather(this.state.query)
+    //     .then(() => {
+    //       this.setState({
+    //         loaded: true,
+    //         refreshing: false
+    //       });
+    //     })
+    //     .catch((err) => {
+    //       console.log('errrrr', err);
+    //     });
+    // }
+  }
+  toggleDrawer() {
+    this.setState({ openMenu: !this.state['openMenu'] });
   }
   render() {
+    const plusIcon = <Button onTap={() => this.toggleDrawer()} iconProps={ {file:iconFile,size:24,stroke:1}} />;
+    let forecast = this.action.getForecast(5103269);
+    let weather = this.action.getWeather(5103269);
     return (
       <NestedViewList {...this.props.viewListProps}>
-        <View title="React Weather">
-          <SearchBar defaultValue="Enter a zip" onKeyDown={this.getWeather} />
+        <View fullscreen currentCity={this.props.cities[0]} title={"React Weather"} titleLeft={plusIcon} titleBarProps={{transparent:true}}>
+          <Drawer from={'top'} open={this.state.openMenu}>
+            <CityMenu />
+          </Drawer>
           <br />
-          {!this.state.loaded && 
-            <p>Go get some weather</p>
+          {!this.props.cities &&
+            <p>{'Click the "+" to add a city'}</p>
           }
-          {this.state.refreshing &&
-            <RotatingLoadingIcon />
-          }
-          {this.props.weather &&
-            <div>
-              <Button onTap={() => this.router().transitionTo('details', {zip: this.state.query })} textColor={'#ffffff'}>
-                {'See details for ' + this.props.weather.city}
-              </Button>
-              <Results />
-            </div>
-          }
+          <Results location={5103269} forecast={forecast} weather={weather}/>
         </View>
-
-        {this.props.child()}
+        
       </NestedViewList>
     );
   }
 });
 
 export default Reapp(Home);
-
-/*
- This is your root route. When you wrap it with Reapp()
- it passes your class two properties:
-
-  - viewListProps: Passes the scrollToStep to your ViewList so it animates
-  - child: The child route
-*/

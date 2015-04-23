@@ -13,10 +13,10 @@ const Results = store.cursor(['weather', 'forecast'], class Results extends Reac
   }
   componentDidMount(){
     if(!this.props.weather){
-      this.action.getWeather(this.state.location);
+      this.action.getWeather(this.props.location);
     }
     if(!this.props.forecast){
-      this.action.getForecast(this.state.location);
+      this.action.getForecast(this.props.location);
     }
   }
   render() {
@@ -24,7 +24,7 @@ const Results = store.cursor(['weather', 'forecast'], class Results extends Reac
       <BackButton onTap={() => window.history.back()} />
 
     return (
-      <View {...this.props} title={"Details for " + this.state.location}>
+      <View {...this.props} title={"Details for " + this.props.location} titleLeft={backButton}>
         <h3 styles={styles.h3}>
           {this.props.weather &&
             <span>{this.props.weather.city}</span>

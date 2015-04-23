@@ -1,27 +1,15 @@
-import { Reapp, React, BackButton, store } from 'reapp-kit';
+import { Reapp, React, store } from 'reapp-kit';
 import Forecast from './Forecast';
 import Chart from './Chart';
 
-const Results = store.cursor(['weather', 'forecast'], class Results extends React.Component {
+export default class Results extends React.Component {
   constructor(props){
     super(props);
   }
-  // componentWillMount(){
-  //   this.state = {
-  //     location: this.context.router.getCurrentParams().zip
-  //   };
-  // }
-  // componentDidMount(){
-  //   if(!this.props.weather){
-  //     this.action.getWeather(this.state.location);
-  //   }
-  //   if(!this.props.forecast){
-  //     this.action.getForecast(this.state.location);
-  //   }
-  // }
+  componentDidMount(){
+    console.log('Results mounted')
+  }
   render() {
-    const backButton = 
-      <BackButton onTap={() => window.history.back()} />
 
     return (
       <div>
@@ -51,7 +39,7 @@ const Results = store.cursor(['weather', 'forecast'], class Results extends Reac
         </h1>
         
         {this.props.forecast &&
-          <div>
+          <div styles={styles.forecastWrapper}>
             <Forecast data={this.props.forecast} />
             <Chart data={this.props.forecast} />
           </div>
@@ -59,7 +47,7 @@ const Results = store.cursor(['weather', 'forecast'], class Results extends Reac
       </div>
     );
   }
-});
+};
 
 let styles = {
   h3: {
@@ -82,8 +70,12 @@ let styles = {
   },
   small: {
       fontSize: '30%'
+  },
+  forecastWrapper: {
+    position: 'absolute',
+    right: 0,
+    left: 0,
+    bottom: 0
   }
   
 };
-
-export default Results;

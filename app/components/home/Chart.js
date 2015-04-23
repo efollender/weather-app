@@ -8,12 +8,12 @@ export default class Chart extends React.Component {
   }
   render(){
     let areaData = [{name:'lows', values: []}, {name:'highs', values: []}];
-    let maxData = this.props.data.map((day,i)=>{
-      areaData[0].values.push([i+1, day.temp.max]);
-    });
-    let minData = this.props.data.map((day,i)=>{
-      areaData[1].values.push([i+1, day.temp.min]);
-    });
+    // let maxData = this.props.data.map((day,i)=>{
+    //   areaData[0].values.push([i+1, day.temp.max]);
+    // });
+    // let minData = this.props.data.map((day,i)=>{
+    //   areaData[1].values.push([i+1, day.temp.min]);
+    // });
     console.log(areaData);
     return (
       <AreaChart
@@ -25,12 +25,11 @@ export default class Chart extends React.Component {
         xAccessor={d=>{
           return d[0];
         }}
-        yAxisLableOffset={0}
-        xAxisLabelOffset={0}
         xAxisTickCount={7}
-        viewBox={'0 0 400 150'}
+        margins={{top: 0, right: 0, bottom: 0, left: 0}}
+        viewBox={'0 0 400 200'}
         axesColor={'#fff'}
-        colors={d3.scale.category20b()}
+        colors={d3.scale.category20c()}
       />
     );
   }

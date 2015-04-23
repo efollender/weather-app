@@ -16,9 +16,18 @@ function toArray(obj){
     }
     return arr;
 }
+action('querySearch', (query)=>{
+	get(`/find?q=${query}&units=imperial`)
+		.then(response =>{
+			store().set('results', response.list);
+		})
+		.catch(err=>{
+			console.log('query err', err);
+		});
+});
 
 action('getWeather', (zip) => {
-	get(`/weather?zip=${zip},us&units=imperial`)
+	get(`/weather?id=${zip}&units=imperial`)
 		.then( (response) => {
 			if(response.main){
 				let currentWeather = {
@@ -26,7 +35,7 @@ action('getWeather', (zip) => {
 					city: response.name,
 					conditions: response.weather[0].main 
 				}
-				store().set('weather', currentWeather);
+				return currentWeather;
 			}
 			console.log(response);
 		})
@@ -37,7 +46,7 @@ action('getWeather', (zip) => {
 });
 
 action('getForecast', (location) => {
-	get(`/forecast/daily?q=${location},us&units=imperial`)
+	get(`/forecast/daily?q=${location}&units=imperial`)
 		.then( (response) => {
 			if(response.cod == '200'){
 				console.log('forecast', response)
@@ -50,7 +59,7 @@ action('getForecast', (location) => {
 						conditions: obj.weather[0]
 					}
 				});
-				store().set('forecast', toArray(forecast));
+				return toArray(forecast);
 			}
 			return true;
 		})
@@ -59,8 +68,12 @@ action('getForecast', (location) => {
 			return false;
 		});
 });
+action('saveCity', (city)=>{
+		console.log('tapped');
+		console.log('saving ', city.name);
+		store().set('cities', store().get('cities').concat(city));
 
-function returnWeatherStore () {
-	let weather = store().get('weather');
-	return weather;
-}
+	});
+action('removeCity', (city)=>{
+	store().set('cities');
+});
